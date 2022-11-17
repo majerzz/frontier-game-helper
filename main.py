@@ -62,6 +62,15 @@ def get_genre(category):
     return create_graf(category, vertex)
 
 
+def get_coef(average, val_1, val_2):
+    game_val = (val_1 + val_2) / 2
+    difference = max(average, game_val) - min(average, game_val)
+    if difference:
+        return difference
+    else:
+        return 1
+
+
 def debug(number_players, category, time, difficult, genres):
     print()
     print("Количество игроков: ", number_players)
@@ -101,21 +110,20 @@ def main():
         # suitable - коэф насколько подходит игра, изначально равна коэф. жанра
         suitable = genres[game[7]]
 
-        game_time = (game[2] + game[3]) / 2
-        difference = max(time, game_time) - min(time, game_time)
-        if difference:
-            suitable *= 1 / difference  # умножаем на коэф. времени
+        coef = get_coef(time, game[2], game[3])  # коэф. времени
+        suitable *= 1 / coef
 
-        game_diff = (game[5] + game[6]) / 2
-        difference = (max(difficult, game_diff) - min(difficult, game_diff)) * 3  # в три раза сильнее влияет чем время
-        if difference:
-            suitable *= 1 / difference # умножаем на коэф. сложности
+        coef = get_coef(number_players, game[4], game[5])  # коэф. кол-ва игроков
+        suitable *= 1 / coef
+
+        coef = get_coef(difficult, game[5], game[6])  # коэф. сложности
+        suitable *= 1 / coef * 3  # в три раза сильнее влияет чем время
 
         if not game[4] <= number_players <= game[5]:
             suitable *= 0 # если не подходит по кол-ву игроков не предлогаем игру
 
-        # по ключу = id игры сопоставляем suitable
-        result[game[0]] = suitable
+        # по ключу равному id игры, сопоставляем suitable
+        result[game[0]] = suitable / 4  # делим на 4 для критерия Лапласа
 
     result = sorted(result.items(), key=itemgetter(1), reverse=True)
     for game in result:
