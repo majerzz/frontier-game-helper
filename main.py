@@ -102,7 +102,7 @@ def main():
 
     result = {}
 
-    select_games = f"SELECT * from CategoryLaugh"
+    select_games = f"SELECT * from party"
     games = execute_read_query(connection, select_games)
 
     for game in games:
@@ -110,16 +110,16 @@ def main():
         # suitable - коэф насколько подходит игра, изначально равна коэф. жанра
         suitable = genres[game[7]]
 
-        coef = get_coef(time, game[2], game[3])  # коэф. времени
+        coef = get_coef(time, game[4], game[5])  # коэф. времени
         suitable *= 1 / coef
 
-        coef = get_coef(number_players, game[4], game[5])  # коэф. кол-ва игроков
+        coef = get_coef(number_players, game[2], game[3])  # коэф. кол-ва игроков
         suitable *= 1 / coef
 
-        coef = get_coef(difficult, game[5], game[6])  # коэф. сложности
+        coef = get_coef(difficult, game[3], game[6])  # коэф. сложности
         suitable *= 1 / coef * 3  # в три раза сильнее влияет чем время
 
-        if not game[4] <= number_players <= game[5]:
+        if not game[2] <= number_players <= game[3]:
             suitable *= 0 # если не подходит по кол-ву игроков не предлогаем игру
 
         # по ключу равному id игры, сопоставляем suitable
@@ -127,7 +127,8 @@ def main():
 
     result = sorted(result.items(), key=itemgetter(1), reverse=True)
     for game in result:
-        print(game)
+        print(showName(connection, game[0]))
+        print(game[1])
 
 
 if __name__ == '__main__':

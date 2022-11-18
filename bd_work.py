@@ -21,3 +21,10 @@ def execute_read_query(connection, query):
         return result
     except Error as er:
         print(f"The error '{er}' occurred")
+
+def showName(connection, id):
+    cursor = connection.cursor()
+    cursor.execute("SELECT title FROM party WHERE id = ?", (id, ))
+    result = cursor.fetchone()
+    if result:
+        return result[0]
