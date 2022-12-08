@@ -93,7 +93,7 @@ def main():
     print("По очереди введите сложность (1: легко; 2: средне; 3: сложно):")
     difficult = get_difficult(number_players)
 
-    print("Выберете жанры и введите их через пробел (слова, ассоциации, порисовать, попиздеть, поржать):")
+    print("Выберете жанры и введите их через пробел (слова, ассоциации, порисовать, поговорить, поржать):")
     genres = get_genre(category)
 
     debug(number_players, category, time, difficult, genres)
