@@ -1,0 +1,326 @@
+html {
+  font-size: 10px;
+  font-family: 'Russo One', serif;
+}
+
+h1:first-letter {
+	color: #FF521D;
+}
+h1 {
+	margin-top: 10px;
+  font-size: 100px;
+  color: #731B67;
+}
+h2 {
+	font-size: 45px;
+	text-align: center;
+	color: #F2441D;
+}
+h3 {
+	background: #F2F2F2;
+	position: absolute;
+	border-radius: 5px;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+	padding: 12px;
+	margin-left: 50px;
+	margin-top: 170px;
+	margin-left: 700px;
+	font-size: 24px;
+	width: 75px;
+	text-align: center;
+	color: #731D6D;
+	font-weight: bold;
+	content: '';
+}
+h4 {
+	color: #731D6D;
+	font-size: 40px;
+	text-align: center;
+	line-height: 3;
+	letter-spacing: 1px;
+}
+a {
+	color: #F2F2F2;
+	font-size: 50px;
+	text-align: center;
+	line-height: 3;
+	letter-spacing: 1px;
+}	
+p {
+	color: #731D6D;
+	font-size: 50px;
+	text-align: center;
+	line-height: 3;
+	letter-spacing: 1px;
+}
+
+input.start {
+	color: #F2F2F2;
+	font-size: 75px;
+	user-select: none; /* Убираем текстовое выделение */
+	text-decoration: none;	/* Убираем подчеркивание */
+	outline: none; /* Убираем контур вокруг ссылки */
+	background-color: #BF5E93; /* Цвет фона */
+	padding: 1em 1.5em; /* Отступ от текста до рамки */
+	border-radius: 50px; /* Уголки */
+	margin-top: 100px;
+}
+input.start:active {
+	background-color: #BF5E93;
+}
+input.start:hover {
+	background-color: #731B67; /* Цвет кнопки при наведении курсора */
+}
+
+input.button1 {
+	background-color: #F2A172;
+	color: #F2F2F2;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+input.button1:hover {
+	background-color: #F2441D;
+}
+
+input.button2 {
+	background-color: #F2A172;
+	color: #F2F2F2;
+	text-align: center;
+	margin-top: 140px;
+	margin-left: auto;
+	margin-right: auto;
+}
+input.button2:hover {
+	background-color: #F2441D;
+}
+
+input.button3 {
+	background-color: #F2A172;
+	color: #F2F2F2;
+	text-align: center;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+input.button3:hover {
+	background-color: #F2441D;
+}
+
+input.button4 {
+	background-color: #F2A172;
+	color: #F2F2F2;
+	text-align: center;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+input.button4:hover {
+	background-color: #F2441D;
+}
+
+input.field {
+	border-color: #F2441D;
+}
+		
+input {
+	font-size:45px;
+	font-family: 'Russo One', serif;
+	color: #731D6D;
+	margin-left: auto;
+    margin-right: auto;
+	outline: none; /* Убираем контур вокруг ссылки */
+	background-color: #F2F2F2; /* Цвет фона */
+	padding: 1em 1.5em; /* Отступ от текста до рамки */
+	border-radius: 50px; /* Уголки */
+	text-align: center;
+	border: none;
+}
+
+.number {
+	background: #F2F2F2;
+	position: absolute;
+	border-radius: 5px;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+	padding: 12px;
+	margin-left: 50px;
+	margin-top: 170px;
+	margin-left: 700px;
+	font-size: 24px;
+	width: 75px;
+	text-align: center;
+	color: #731D6D;
+	font-weight: bold;
+	content: '';
+}
+
+.time {
+	appearance: none;
+	display: flex;
+	width: 500px;
+	justify-content: center;
+	align-items: center;
+	border-width: 10px;
+	border-color: black;
+}
+.time::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	margin-top: -2px;
+	width: 30px;
+    height: 30px;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+	border-radius: 30px;
+	background: #F2441D;
+}
+.time::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 25px;
+	background: #F2A172;
+	border-radius: 10px;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+	cursor: pointer;
+	-webkit-appearance: none;
+}
+
+.form_radio_btn_2 {
+	display: inline-block;
+	margin-top: 10px;
+	margin-right: 30px;
+	margin-left: 150px;
+	color: #F2F2F2;
+	font-size: 40px;
+}
+.form_radio_btn_2 input[type=radio] {
+	display: none;
+}
+.form_radio_btn_2 label {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 50px;
+	line-height: 100px;
+	border-radius: 50px;
+	user-select: none;
+	background-color: #BF5E93;
+}
+.form_radio_btn_2 input[type=radio]:checked + label {
+	background: #731D6D;
+}
+.form_radio_btn_2 label:hover {
+	color: #BFBFBF;
+}
+.form_radio_btn_2 input[type=radio]:disabled + label {
+	background: #efefef;
+	color: #666;
+}
+
+.form_radio_btn_1 {
+	display: inline-block;
+	margin-right: 30px;
+	margin-top: 10px;
+	margin-left: 250px;
+	color: #F2F2F2;
+	font-size: 40px;
+}
+.form_radio_btn_1 input[type=radio] {
+	display: none;
+}
+.form_radio_btn_1 label {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 50px;
+	line-height: 100px;
+	border-radius: 50px;
+	user-select: none;
+	background: #BF5E93;
+}
+.form_radio_btn_1 input[type=radio]:checked + label {
+	background: #731D6D;
+}
+.form_radio_btn_1 label:hover {
+	color: #BFBFBF;
+}
+.form_radio_btn_1 input[type=radio]:disabled + label {
+	background: #efefef;
+	color: #666;
+}
+
+.checkbox-btn {
+	display: inline-block;
+	margin: 0 15px 0 20px;
+	user-select: none;
+	position: relative;
+}
+.checkbox-btn input[type=checkbox] {
+	z-index: -1;
+	opacity: 0;
+	display: block;
+	width: 0;
+	height: 0;
+}
+.checkbox-btn span {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 20px;
+	line-height: 100px;
+	color: #F2F2F2;
+	font-size: 40px;
+	border-radius: 50px;
+	background: #BF5E93;
+	transition: background 0.2s ease;
+}
+.checkbox-btn input[type=checkbox]:checked + span {
+	background: #731D6D;
+}
+.checkbox-btn input:hover {
+	color: #BFBFBF;
+}
+.checkbox-btn input[type=checkbox]:disabled + span {
+	background: #efefef;
+	color: #666;
+	cursor: default;
+}
+.checkbox-btn input[type=checkbox]:checked:disabled + span {
+	background: #f7efdc;
+}
+
+.checkbox-btn1 {
+	display: inline-block;
+	margin: 0 15px 0 20px;
+	user-select: none;
+	position: relative;
+}
+.checkbox-btn1 input[type=checkbox] {
+	z-index: -1;
+	opacity: 0;
+	display: block;
+	width: 0;
+	height: 0;
+}
+.checkbox-btn1 span {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 20px;
+	line-height: 100px;
+	color: #F2F2F2;
+	font-size: 40px;
+	margin-top: 10px;
+	margin-left: 30px;
+	border-radius: 50px;
+	background: #BF5E93;
+	transition: background 0.2s ease;
+}
+.checkbox-btn1 input[type=checkbox]:checked + span {
+	background: #731D6D;
+}
+.checkbox-btn1 input:hover {
+	color: #BFBFBF;
+}
+.checkbox-btn1 input[type=checkbox]:disabled + span {
+	background: #efefef;
+	color: #666;
+	cursor: default;
+}
+.checkbox-btn1 input[type=checkbox]:checked:disabled + span {
+	background: #f7efdc;
+}

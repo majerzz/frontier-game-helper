@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<style>
+		body {
+			background: #F2F2F2 url(images/backround.jpg);
+		}
+	</style>
+    <title>ФР</title>
+	<link href='https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&family=Russo+One&display=swap' rel='stylesheet' type='text/css'>
+	<link href="styles/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+	<h1>Фронтир</h1>
+	<form action="three.html" method="post" id="next">
+		<h2><label for="count">Введите количество игроков</label></h2>
+		<p><input class="field" list="Количество игроков" name="count1" id="count1" placeholder="Количество игроков" autocomplete="off"></p>
+		<datalist id="Количество игроков">
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>Больше 6</option>
+		</datalist>
+		<p><input type="submit" class="button1" value="Продолжить" id="time"></p>
+	</form>
+	<script src="scripts/two.js"></script>
+  </body>
+</html>
