@@ -93,7 +93,11 @@ def main():
     print("По очереди введите сложность (1: легко; 2: средне; 3: сложно):")
     difficult = get_difficult(number_players)
 
-    print("Выберете жанры и введите их через пробел (слова, ассоциации, порисовать, поговорить, поржать):")
+    print(category)
+    if(category == "laugh"):
+        print("Выберете жанры и введите их через пробел (слова, ассоциации, порисовать, поговорить, поржать):")
+    else :
+        print("Выберете жанры и введите их через пробел (евро, попиздиться, area_control, колодострой, городострой, стратегии, кооператив, скрытые_роли, приключенческие_кампании, лавкрафт, детектив, евро, стратегии):")
     genres = get_genre(category)
 
     debug(number_players, category, time, difficult, genres)
@@ -102,7 +106,11 @@ def main():
 
     result = {}
 
-    select_games = f"SELECT * from party"
+    if (category == "laugh"):
+        select_games = f"SELECT * from party"
+    else:
+        select_games = f"SELECT * from think"
+
     games = execute_read_query(connection, select_games)
 
     for game in games:
@@ -127,7 +135,7 @@ def main():
 
     result = sorted(result.items(), key=itemgetter(1), reverse=True)
     for game in result:
-        print(showName(connection, game[0]))
+        print(showName(connection, game[0], category))
         print(game[1])
 
 

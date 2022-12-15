@@ -22,9 +22,12 @@ def execute_read_query(connection, query):
     except Error as er:
         print(f"The error '{er}' occurred")
 
-def showName(connection, id):
+def showName(connection, id, category):
     cursor = connection.cursor()
-    cursor.execute("SELECT title FROM party WHERE id = ?", (id, ))
+    if(category == "laugh"):
+        cursor.execute("SELECT title FROM party WHERE id = ?", (id, ))
+    else:
+        cursor.execute("SELECT title FROM think WHERE id = ?", (id,))
     result = cursor.fetchone()
     if result:
         return result[0]
