@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 	<style>
 		body {
-			background: #F2F2F2 url(static/images/backround.jpg);
+			background: #F2F2F2 url(images/backround.jpg);
 		}
 	</style>
     <title>ФР</title>
