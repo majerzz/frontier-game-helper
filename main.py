@@ -1,24 +1,11 @@
 from graf import *
 from bd_work import *
+from itertools import repeat
 import random
+from flask import Flask, render_template, request
 
 
-def input_check(string, choice):
-    while string not in choice:
-        print("Неверное значение, введите еще раз:")
-        string = input().lower()
-    return string
-
-
-def get_category(count):
-    cat_think, cat_laugh = 0, 0
-    for i in range(count):
-        category = input_check(input().lower(), ['1', "подумать", '2', "посмеяться"])
-        if category in ['1', "подумать"]:
-            cat_think += 1
-        else:
-            cat_laugh += 1
-
+def get_category(cat_think, cat_laugh):
     if cat_think > cat_laugh:
         return "think"
     elif cat_think < cat_laugh:
@@ -27,39 +14,18 @@ def get_category(count):
         return random.choice(["подумать", "посмеяться"])
 
 
-def get_time(count):
-    result = 0
-    for i in range(count):
-        time = input_check(input().lower(), ['1', "15 мин", '2', "1 час", '3', "1-2 часа", '4', "3+ часов"])
-        if time in ['1', "15 мин"]:
-            result += 15
-        elif time in ['2', "1 час"]:
-            result += 60
-        elif time in ['3', "1-2 часа"]:
-            result += 120
-        elif time in ['4', "3+ часов"]:
-            result += 240
+def get_time(result, count):
     result //= count
     return result
 
 
-def get_difficult(count):
-    result = 0
-    for i in range(count):
-        difficult = input_check(input().lower(), ['1', "легко", '2', "средне", '3', "сложно"])
-        if difficult in ['1', "легко"]:
-            result += 1
-        elif difficult in ['2', "средне"]:
-            result += 3
-        else:
-            result += 5
+def get_difficult(result, count):
     result //= count
     return result
 
 
-def get_genre(category):
-    vertex = [str(n) for n in input().split()] # Выбор
-    return create_graf(category, vertex)
+def get_genre(category, genres):
+    return create_graf(category, genres)
 
 
 def get_coef(average, val_1, val_2):
@@ -82,62 +48,194 @@ def debug(number_players, category, time, difficult, genres):
 
 
 def main():
-    number_players = int(input("Введите количество игроков: "))
+    global t_slider_time #время
+    global number_players #итератор игроков
+    global fixed_players #количество игроков
+    global cat #категория
+    global dif #сложность
+    global laugh, think
+    global genres #массив с жанрами
 
-    print("По очереди введите категорию (1: подумать; 2: посмеяться):")
-    category = get_category(number_players)
+    number_players = 1
+    t_slider_time = 0
+    cat = 0
+    dif = 0
+    laugh = 0
+    think = 0
 
-    print("По очереди введите время (1: 15 мин; 2: 1 час; 3: 1-2 часа; 4: 3+ часов):")
-    time = get_time(number_players)
+    app = Flask(__name__)
 
-    print("По очереди введите сложность (1: легко; 2: средне; 3: сложно):")
-    difficult = get_difficult(number_players)
+    @app.route("/")
+    def index():
+        return render_template('one.html')
 
-    print(category)
-    if(category == "laugh"):
-        print("Выберете жанры и введите их через пробел (слова, ассоциации, порисовать, поговорить, поржать):")
-    else :
-        print("Выберете жанры и введите их через пробел (евро, попиздиться, area_control, колодострой, городострой, стратегии, кооператив, скрытые_роли, приключенческие_кампании, лавкрафт, детектив, евро, стратегии):")
-    genres = get_genre(category)
+    @app.route("/2", methods=['GET', 'POST'])
+    def index2():
+        return render_template('two.html')
 
-    debug(number_players, category, time, difficult, genres)
+    @app.route('/3', methods=['GET', 'POST'])
+    def index3():
+        global number_players
+        global fixed_players
+        needValues = request.values.to_dict()
+        number_players = needValues['count1']
+        fixed_players = int(number_players)
+        return render_template('three.html')
 
-    connection = create_connection(f"data\\bd\\{category}_categ.sqlite")
+    @app.route('/4', methods=['GET', 'POST'])
+    def index4():
+        global number_players
+        global fixed_players
+        global dif
 
-    result = {}
+        needValues = request.values.to_dict()
+        difficulty = needValues['radio2']
 
-    if (category == "laugh"):
-        select_games = f"SELECT * from party"
-    else:
-        select_games = f"SELECT * from think"
+        d = int(difficulty)
+        if(d == 1):
+            d = 1
+        elif (d == 2):
+            d = 3
+        elif (d == 3):
+            d = 5
 
-    games = execute_read_query(connection, select_games)
+        dif += d
 
-    for game in games:
+        if (int(number_players) == 1):
+            sss_dif = get_difficult(dif, fixed_players)
+            print(sss_dif, "СЛОЖНОСТЬ", fixed_players)
 
-        # suitable - коэф насколько подходит игра, изначально равна коэф. жанра
-        suitable = genres[game[7]]
+        print(needValues['radio2'])
+        return render_template('four.html')
 
-        coef = get_coef(time, game[4], game[5])  # коэф. времени
-        suitable *= 1 / coef
+    @app.route('/5', methods=['GET', 'POST'])
+    def index5():
+        global t_slider_time
+        global number_players
+        global fixed_players
 
-        coef = get_coef(number_players, game[2], game[3])  # коэф. кол-ва игроков
-        suitable *= 1 / coef
+        needValues = request.values.to_dict()
+        slider_time = needValues['slider']
 
-        coef = get_coef(difficult, game[3], game[6])  # коэф. сложности
-        suitable *= 1 / coef * 3  # в три раза сильнее влияет чем время
+        t = int(slider_time)
+        if (t >= 1 and t <= 15):
+            t = 15
+        elif (t >= 16 and t <= 60):
+            t = 60
+        elif (t >= 61 and t <= 120):
+            t = 120
+        else:
+            t = 360
+        t_slider_time += t
+        print(t_slider_time, "вРЕМЯ")
+        if (int(number_players) == 1):
+            sss_time = get_time(t_slider_time, fixed_players)
+            print(sss_time, " ВРЕМЯ", fixed_players)
+        return render_template('five.html')
 
-        if not game[2] <= number_players <= game[3]:
-            suitable *= 0 # если не подходит по кол-ву игроков не предлогаем игру
+    @app.route('/6', methods=['POST'])
+    def index6():
+        global cat
+        global laugh, think
+        global number_players
 
-        # по ключу равному id игры, сопоставляем suitable
-        result[game[0]] = suitable / 4  # делим на 4 для критерия Лапласа
+        needValues = request.values.to_dict()
+        cat = needValues['radio1']
 
-    result = sorted(result.items(), key=itemgetter(1), reverse=True)
-    for game in result:
-        print(showName(connection, game[0], category))
-        print(game[1])
+        c = int(cat)
+        if (c == 1):
+            laugh += 1
+        elif (c == 2):
+            think += 1
 
+        if (int(number_players) == 1):
+            sss_cat = get_category(think, laugh)
+            print(sss_cat, " - Категория")
+
+        if (int(number_players) > 1):
+            t = int(number_players)
+            t -= 1
+            number_players = t
+            return render_template('three.html')
+
+        if request.method == 'POST':
+            if needValues['radio1'] == '1':
+                return render_template('six.html')
+            elif needValues['radio1'] == '2':
+                return render_template('seven.html')
+        else:
+            pass
+
+
+    @app.route('/8', methods=['GET', 'POST'])
+    def index8():
+        global cat
+        global genres
+        global cat
+        global select_games
+        scat = "whaa"
+        icat = int(cat)
+        if (icat == 1):
+            needValues = request.form.getlist('checkbox1')
+            print(needValues)
+            scat = "laugh"
+        elif (icat == 2):
+            needValues = request.form.getlist('checkbox2')
+            print(needValues)
+            scat = "think"
+
+        genres = get_genre(scat, needValues)
+        connection = create_connection(f"data\\bd\\{scat}_categ.sqlite")
+
+        if (scat == "laugh"):
+            select_games = f"SELECT * from party"
+        else:
+            select_games = f"SELECT * from think"
+
+        result = {}
+
+        games = execute_read_query(connection, select_games)
+
+        for game in games:
+
+            # suitable - коэф насколько подходит игра, изначально равна коэф. жанра
+            suitable = genres[game[7]]
+
+            coef = get_coef(t_slider_time, game[4], game[5])  # коэф. времени
+            suitable *= 1 / coef
+
+            coef = get_coef(fixed_players, game[2], game[3])  # коэф. кол-ва игроков
+            suitable *= 1 / coef
+
+            coef = get_coef(dif, game[3], game[6])  # коэф. сложности
+            suitable *= 1 / coef * 3  # в три раза сильнее влияет чем время
+
+            if not game[2] <= fixed_players <= game[3]:
+                suitable *= 0  # если не подходит по кол-ву игроков не предлогаем игру
+
+            # по ключу равному id игры, сопоставляем suitable
+            result[game[0]] = suitable / 4  # делим на 4 для критерия Лапласа
+
+        result = sorted(result.items(), key=itemgetter(1), reverse=True)
+
+        x = 0
+        mylist = ["a", "b", "c", "d", "e", "f"]
+
+        for game in result:
+
+            print(showName(connection, game[0], scat))
+            mylist[x] = showName(connection, game[0], scat)
+            print(game[1])
+            x+=1
+
+            if(x == 6):
+                break
+        print(mylist)
+        return render_template('eight.html', data=mylist)
+
+
+    if __name__ == "__main__":
+        app.run(debug=True)
 
 if __name__ == '__main__':
     main()

@@ -10,6 +10,3 @@ input.addEventListener("input", event => {
 
 var button = document.getElementById("time"),
 value = button.form.slider.value;
-button.onclick = function() {
-    alert(button.form.slider.value.split(" ")[0]);
-}

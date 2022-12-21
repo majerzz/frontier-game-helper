@@ -8,7 +8,5 @@ button.onclick = function() {
 		if (hv.checked) outputList.push(hv.value)
 	}
 	
-	const outString = outputList.join(" ")
-    alert(outString);
 
 }

@@ -39,6 +39,19 @@ h4 {
 	line-height: 3;
 	letter-spacing: 1px;
 }
+h5 {
+	margin-top: 1px;
+	margin-bottom: 5px;
+	color: #F2441D;
+	font-size: 30px;
+	text-align: center;
+}
+h6 {
+	margin: 1px;
+	color: #F2A172;
+	font-size: 20px;
+	text-align: left;
+}
 a {
 	color: #F2F2F2;
 	font-size: 50px;
@@ -323,4 +336,9 @@ input {
 }
 .checkbox-btn1 input[type=checkbox]:checked:disabled + span {
 	background: #f7efdc;
+}
+
+table {
+	background: none;
+	margin: center;
 }
