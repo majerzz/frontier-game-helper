@@ -79,19 +79,24 @@ def main():
         session["think"] = think
         return render_template('one.html')
 
+
     @app.route("/2", methods=['GET', 'POST'])
     def index2():
         return render_template('two.html')
 
-    @app.route('/3', methods=['GET', 'POST'])
-    def index3():
+    @app.route("/playerchange", methods=['GET', 'POST'])
+    def indexpc():
         needValues = request.values.to_dict()
         number_players = needValues['count1']
         session["number_players"] = number_players
         fixed_players = int(number_players)
         session["fixed_players"] = fixed_players
-        if "fixed_players" in session:
-            return render_template('three.html')
+        return render_template('player_change.html')
+
+
+    @app.route('/3', methods=['GET', 'POST'])
+    def index3():
+        return render_template('three.html')
 
     @app.route('/4', methods=['GET', 'POST'])
     def index4():
@@ -175,7 +180,7 @@ def main():
             t -= 1
             number_players = t
             session["number_players"] = number_players
-            return render_template('three.html')
+            return render_template('player_change.html')
 
         if request.method == 'POST':
             if needValues['radio1'] == '1':
