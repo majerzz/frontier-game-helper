@@ -2,7 +2,8 @@ from graf import *
 from bd_work import *
 from itertools import repeat
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
+
 
 
 def get_category(cat_think, cat_laugh):
@@ -48,15 +49,14 @@ def debug(number_players, category, time, difficult, genres):
 
 
 def main():
+    app = Flask(__name__)
+
     global t_slider_time #время
-    global number_players #итератор игроков
-    global fixed_players #количество игроков
     global cat #категория
     global dif #сложность
     global laugh, think
     global genres #массив с жанрами
 
-    number_players = 1
     t_slider_time = 0
     cat = 0
     dif = 0
@@ -67,6 +67,16 @@ def main():
 
     @app.route("/")
     def index():
+        t_slider_time = 0
+        session["t_slider_time"] = t_slider_time
+        cat = 0
+        session["cat"] = cat
+        dif = 0
+        session["dif"] = dif
+        laugh = 0
+        session["laugh"] = laugh
+        think = 0
+        session["think"] = think
         return render_template('one.html')
 
     @app.route("/2", methods=['GET', 'POST'])
@@ -75,21 +85,23 @@ def main():
 
     @app.route('/3', methods=['GET', 'POST'])
     def index3():
-        global number_players
-        global fixed_players
         needValues = request.values.to_dict()
         number_players = needValues['count1']
+        session["number_players"] = number_players
         fixed_players = int(number_players)
-        return render_template('three.html')
+        session["fixed_players"] = fixed_players
+        if "fixed_players" in session:
+            return render_template('three.html')
 
     @app.route('/4', methods=['GET', 'POST'])
     def index4():
-        global number_players
-        global fixed_players
-        global dif
+        number_players = session["number_players"]
+        fixed_players = session["fixed_players"]
+        dif = session["dif"]
 
         needValues = request.values.to_dict()
-        difficulty = needValues['radio2']
+        session["difficulty"] = needValues['radio2']
+        difficulty = session["difficulty"]
 
         d = int(difficulty)
         if(d == 1):
@@ -104,18 +116,20 @@ def main():
         if (int(number_players) == 1):
             sss_dif = get_difficult(dif, fixed_players)
             print(sss_dif, "СЛОЖНОСТЬ", fixed_players)
+            session["sss_dif"] = sss_dif
 
         print(needValues['radio2'])
         return render_template('four.html')
 
     @app.route('/5', methods=['GET', 'POST'])
     def index5():
-        global t_slider_time
-        global number_players
-        global fixed_players
+        t_slider_time = session["t_slider_time"]
+        number_players = session["number_players"]
+        fixed_players = session["fixed_players"]
 
         needValues = request.values.to_dict()
-        slider_time = needValues['slider']
+        session["slider_time"] = needValues['slider']
+        slider_time = session["slider_time"]
 
         t = int(slider_time)
         if (t >= 1 and t <= 15):
@@ -129,18 +143,21 @@ def main():
         t_slider_time += t
         print(t_slider_time, "вРЕМЯ")
         if (int(number_players) == 1):
-            sss_time = get_time(t_slider_time, fixed_players)
+            session["sss_time"] = get_time(t_slider_time, fixed_players)
+            sss_time = session["sss_time"]
             print(sss_time, " ВРЕМЯ", fixed_players)
         return render_template('five.html')
 
     @app.route('/6', methods=['POST'])
     def index6():
-        global cat
-        global laugh, think
-        global number_players
+        cat = session["cat"]
+        laugh = session["laugh"]
+        think = session["think"]
+        number_players = session["number_players"]
 
         needValues = request.values.to_dict()
         cat = needValues['radio1']
+        session["cat"] = cat
 
         c = int(cat)
         if (c == 1):
@@ -149,13 +166,15 @@ def main():
             think += 1
 
         if (int(number_players) == 1):
-            sss_cat = get_category(think, laugh)
+            session["sss_cat"] = get_category(think, laugh)
+            sss_cat = session["sss_cat"]
             print(sss_cat, " - Категория")
 
         if (int(number_players) > 1):
             t = int(number_players)
             t -= 1
             number_players = t
+            session["number_players"] = number_players
             return render_template('three.html')
 
         if request.method == 'POST':
@@ -169,22 +188,28 @@ def main():
 
     @app.route('/8', methods=['GET', 'POST'])
     def index8():
-        global cat
         global genres
-        global cat
+        cat = session["cat"]
         global select_games
-        scat = "whaa"
-        icat = int(cat)
+        fixed_players = session["fixed_players"]
+        session["scat"] = "whaa"
+        session["icat"] = int(cat)
+        icat = session["icat"]
         if (icat == 1):
             needValues = request.form.getlist('checkbox1')
+            session["needValues"] = needValues
             print(needValues)
-            scat = "laugh"
+            session["scat"] = "laugh"
         elif (icat == 2):
             needValues = request.form.getlist('checkbox2')
+            session["needValues"] = needValues
             print(needValues)
-            scat = "think"
+            session["scat"] = "think"
+        needValues = session["needValues"]
+        scat = session["scat"]
 
-        genres = get_genre(scat, needValues)
+        session["genres"] = get_genre(scat, needValues)
+        genres = session["genres"]
         connection = create_connection(f"data\\bd\\{scat}_categ.sqlite")
 
         if (scat == "laugh"):
@@ -235,6 +260,7 @@ def main():
 
 
     if __name__ == "__main__":
+        app.secret_key = 'super secret key'
         app.run(debug=True)
 
 if __name__ == '__main__':
